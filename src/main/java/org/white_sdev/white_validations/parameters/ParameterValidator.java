@@ -272,10 +272,12 @@ public class ParameterValidator {
 	    throw e;
         } catch (Exception e) {
 	    log.debug("::notNullValidation(parameter,errorMessage,exceptionClazz) - Exception: "+e);
-            if(e instanceof White_ValidationsException){
-		throw new White_ValidationsException("Impossible to validate the parameter due to an unexpected internal error.", e);
+	    //it is the user defined Exception Wrap class (must be a subclass of runtime and not this library's exception class)
+            if(e.getClass() != new RuntimeException().getClass()  && e instanceof RuntimeException && !(e instanceof White_ValidationsException) ){
+		throw e;
 	    }  
-	    throw e;
+	    throw new White_ValidationsException("Impossible to validate the parameter due to an unexpected internal error.", e);
+	    
         }
     }
     
@@ -306,10 +308,12 @@ public class ParameterValidator {
 	    throw e;
         } catch (Exception e) {
 	    log.debug("::notNullValidation(parameters, errorMessage,exceptionClazz) - Exception: "+e);
-            if(e instanceof White_ValidationsException){
-		throw new White_ValidationsException("Impossible to validate the parameter(s) array due to an unexpected internal error.", e);
+	    //it is the user defined Exception Wrap class (must be a subclass of runtime and not this library's exception class)
+            if(e.getClass() != new RuntimeException().getClass()  && e instanceof RuntimeException && !(e instanceof White_ValidationsException) ){
+		throw e;
 	    }  
-	    throw e;
+	    throw new White_ValidationsException("Impossible to validate the parameter(s) array due to an unexpected internal error.", e);
+	    
         }
     }
     
