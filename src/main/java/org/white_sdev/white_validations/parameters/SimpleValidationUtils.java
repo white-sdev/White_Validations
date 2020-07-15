@@ -100,7 +100,7 @@ package org.white_sdev.white_validations.parameters;
 
 import java.lang.reflect.InvocationTargetException;
 import lombok.extern.slf4j.Slf4j;
-import org.white_sdev.white_validations.exceptions.White_ValidationException;
+import org.white_sdev.white_validations.exceptions.White_ValidationsException;
 
 /**
  * You will encounter several useful methods specifically created to be used by {@link ParameterValidator} <code>class</code>
@@ -119,7 +119,7 @@ public class SimpleValidationUtils {
      * @param exceptionClazz	{@link T} class that inherits from <code>class</code> {@link RuntimeException} to instantiate and embed the innerException
      * @return	    The instance from the given {@link T} {@link Class} to throw.
      * @param <T>   The {@link RuntimeException} {@link Class} defined by the user/caller.
-     * @throws White_ValidationException in case there is a problem creating an object from the provided {@link RuntimeException} (<code>T</code>) Class.
+     * @throws White_ValidationsException in case there is a problem creating an object from the provided {@link RuntimeException} (<code>T</code>) Class.
      */
     public static <T extends RuntimeException> T createException(String errorMessage, Exception innerException,Class<T> exceptionClazz){
 	log.trace("::createException(errorMessage,innerException,exceptionClazz) - Start: ");
@@ -131,12 +131,12 @@ public class SimpleValidationUtils {
 	    return exception;
 	}catch (NoSuchMethodException ex){
 	    log.error("::createException(errorMessage,innerException,exceptionClazz) - Error when creating a RuntimeException from the customized caller class: "+exceptionClazz.getName()+".  The class does not have a Constructor that receives a String and a RuntimeException",ex);
-	    throw new White_ValidationException("Error when creating a RuntimeException from the customized caller class: "+exceptionClazz.getName()+".  Make sure it has a constructor that receives a String and an encapsulated RuntimeException",ex);
+	    throw new White_ValidationsException("Error when creating a RuntimeException from the customized caller class: "+exceptionClazz.getName()+".  Make sure it has a constructor that receives a String and an encapsulated RuntimeException",ex);
 	} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
 	    log.error("::createException(errorMessage,innerException,exceptionClazz) - Error when creating a RuntimeException from the customized caller class: "+exceptionClazz.getName()+".  Make sure it has a constructor that receives a String and an encapsulated RuntimeException",ex);
-	    throw new White_ValidationException("Error when creating a RuntimeException from the customized caller class: "+exceptionClazz.getName()+".  Make sure it has a constructor that receives a String and an encapsulated RuntimeException",ex);
+	    throw new White_ValidationsException("Error when creating a RuntimeException from the customized caller class: "+exceptionClazz.getName()+".  Make sure it has a constructor that receives a String and an encapsulated RuntimeException",ex);
 	}catch(Exception ex){
-	    throw new White_ValidationException("Unknown error when creating a RuntimeException from the customized caller class: "+exceptionClazz.getName(),ex);
+	    throw new White_ValidationsException("Unknown error when creating a RuntimeException from the customized caller class: "+exceptionClazz.getName(),ex);
 	}
     }
     

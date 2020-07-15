@@ -1,5 +1,5 @@
 /*
- *  Filename:  CustomException.java
+ *  Filename:  ParameterValidatorTest.java
  *  Creation Date:  Jun 27, 2020
  *  Purpose:   
  *  Author:    <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
@@ -96,28 +96,81 @@
  * 
  * Creative Commons may be contacted at creativecommons.org.
  */
-package org.white_sdev.white_validations.parameters;
+package org.white_sdev.white_validations.test.parameters;
 
-//import lombok.extern.slf4j.Slf4j;
+import org.white_sdev.white_validations.test.parameters.utils.CustomException;
+import java.util.Collection;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.white_sdev.white_validations.parameters.ParameterValidator.*;
+
 
 /**
- * Class to test library behavior inherits from {@link Exception}
+ * Test for the class {@link ParemeterValidator}
  * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
- * @since Jun 27, 2020
+ * @since 2020-06-27
  */
-//@Slf4j
-public class CustomException extends RuntimeException {
+@Slf4j
+public class ParameterValidatorTest {
+
+    /**
+     * Test of notNullValidation method, of class ParameterValidator.
+     * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
+     * @since 2020-06-27
+     */
+    @Test
+    public void testNotNullValidation() {
+	log.trace("::testNotNullValidation() - Start: ");
+	try{
+	    notNullValidation((Collection)null, "Message to the user");
+	    fail("The method didnt throw any exception.");
+	}catch(RuntimeException e){
+	    log.debug("::testNotNullValidation() - Finish: Exception thrown: \n",e);
+	}
+    }
     
+    @Test
+    public void testNormalNotNullValidation() {
+	log.trace("::testNormalNotNullValidation() - Start: ");
+	try{
+	    notNullValidation(1, "Message to the user");
+	    log.info("::testNormalNotNullValidation() - Finish: Test passed");
+	}catch(RuntimeException e){
+	    log.error("::testNormalNotNullValidation() - The method mistakenly returned an error: Exception thrown: \n",e);
+	    assertTrue(false,"The method mistakenly returned an error: Exception thrown: \n"+e);
+	}
+    }
     
     /**
-     * Class Constructor.
+     * Test of notNullValidation(3 parameters) method, of class ParameterValidator.
      * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
-     * @param errorMessage  descriptive dummy message to show
-     * @param e		    dummy exception to throw
-     * @since Jun 27, 2020
+     * @since 2020-06-27
      */
-    public CustomException(String errorMessage,RuntimeException e){
-	    super(errorMessage,e);
+    @Test
+    public void testNotNullValidationCustomExceptionWrap(){
+	log.trace("::testNotNullValidationCustomExceptionWrap() - Start: ");
+	String message="Message to the user";
+	try{
+	    notNullValidation((Object)null,message , CustomException.class);
+	    fail("The method didnt throw the custom exception CustomException.");
+	}catch(CustomException e){
+	    log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",e);
+	    assert(e.getMessage().contains(message));
 	}
+    }
+    
+    @Test
+    public void testBridgedRuntimeThrow(){
+	log.trace("::testNotNullValidationCustomExceptionWrap() - Start: ");
+	String message="Message to the user";
+	try{
+	    notNullValidation((Object[])null,message , CustomException.class);
+	    fail("The method didnt throw the custom exception CustomException.");
+	}catch(CustomException e){
+	    log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",e);
+	    assert(e.getMessage().contains(message));
+	}
+    }
     
 }

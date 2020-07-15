@@ -1,5 +1,5 @@
 /*
- *  Filename:  White_ValidationException.java
+ *  Filename:  White_ValidationsException.java
  *  Creation Date:  Jun 30, 2020
  *  Purpose:   
  *  Author:    <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
@@ -98,15 +98,14 @@
  */
 package org.white_sdev.white_validations.exceptions;
 
-//import lombok.extern.slf4j.Slf4j;
-
 /**
- * Main Exception class of the App. Used mainly to encapsulate other {@link Exception Exceptions} and declare useful information on the errors found exclusively inside the library.
+ * Main Exception class of the library. Used mainly to encapsulate other {@link Exception exceptions} 
+ * and declare useful information on the errors found exclusively inside the library.
  *
  * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
  * @since May 22, 2020
  */
-public class White_ValidationException extends RuntimeException{
+public class White_ValidationsException extends RuntimeException{
     
     
     //<editor-fold defaultstate="collapsed" desc="Constructors">
@@ -118,7 +117,7 @@ public class White_ValidationException extends RuntimeException{
      * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
      * @since 2020-05-22
      */
-    public White_ValidationException(String message, Exception ex) {
+    public White_ValidationsException(String message, Exception ex) {
 	super(message, ex);
     }
 
@@ -129,9 +128,9 @@ public class White_ValidationException extends RuntimeException{
      * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
      * @since 2020-05-22
      */
-    public White_ValidationException(String message) {
+    public White_ValidationsException(String message) {
 	super(message);
     }
-//</editor-fold>
+    //</editor-fold>
     
 }
