@@ -125,7 +125,7 @@ public class ParameterValidator {
     //<editor-fold defaultstate="collapsed" desc="no Message,No exception Class">
     
     /**
-     * Validates that the given {@linkn Object} and checks if the instance is not {@code null}.
+     * Validates that the given {@link Object} and checks if the instance is not {@code null}.
      * If the object itself is {@code null} will throw an {@link IllegalArgumentException} using the 
      * defaulted message: "The provided parameter should not be {@code null}, make sure it is initialized before the call."
      * intended for the second hand caller (the code that is calling the method calling this one).
@@ -143,7 +143,7 @@ public class ParameterValidator {
     }
     
     /**
-     * Validates that the given array of {@linkn Object} parameters and checks if the instance or the elements inside are not null.
+     * Validates that the given array of {@link Object} parameters and checks if the instance or the elements inside are not null.
      * If the any of the parameters or the object itself is null will throw an {@link IllegalArgumentException} using the 
      * defaulted message: "The provided parameter should not be {@code null}, make sure it is initialized before the call."
      * intended for the second hand caller (the code that is calling the method calling this one).
@@ -152,7 +152,7 @@ public class ParameterValidator {
      * @author <a href='mailto:obed.vazquez@gmail.com'>Obed Vazquez</a>
      * @since 2020-07-15
      * @param parameters array of {@link Object objects} to validate whether it is or have any null values or not.
-     * @throws IllegalArgumentException - if the provided parameter is null and the class {@link T} is not provided.
+     * @throws IllegalArgumentException - if the provided parameter is null and the class {@code T} is not provided.
      */
     public static void notNullValidation(Object[] parameters) {
 	log.trace("::notNullValidation(parameters) - Start: Bridged");
@@ -182,7 +182,7 @@ public class ParameterValidator {
     //<editor-fold defaultstate="collapsed" desc="No exception Class">
     
     /**
-     * Validates that the given {@linkn Object} and checks if the instance is not {@code null}.
+     * Validates that the given {@link Object} and checks if the instance is not {@code null}.
      * If the object itself is {@code null} will throw an {@link IllegalArgumentException}
      * intended for the second hand caller (the code that is calling the method calling this one).
      * This method uses the {@link #notNullValidation(java.util.Collection, java.lang.String, java.lang.Class)} element for the validation.
@@ -202,7 +202,7 @@ public class ParameterValidator {
     }
     
     /**
-     * Validates that the given array of {@linkn Object} parameters and checks if the instance or the elements inside are not null.
+     * Validates that the given array of {@link Object} parameters and checks if the instance or the elements inside are not null.
      * If the any of the parameters or the object itself is null will throw an {@link IllegalArgumentException} 
      * intended for the second hand caller (the code that is calling the method calling this one).
      * This method uses the {@link #notNullValidation(java.util.Collection, java.lang.String, java.lang.Class)} element for the validation.
@@ -212,7 +212,7 @@ public class ParameterValidator {
      * @param parameters array of {@link Object objects} to validate whether it is or have any null values or not.
      * @param errorMessage {@link String message} to add to the exception as a description in case the parameter is in fact null. 
      *			    If this is null the defaulted message will be used: "The provided parameter should not be null, make sure it is initialized before the call."
-     * @throws IllegalArgumentException - if the provided parameter is null and the class {@link T} is not provided.
+     * @throws IllegalArgumentException - if the provided parameter is null and the class {@code T} is not provided.
      */
     public static void notNullValidation(Object[] parameters,String errorMessage) {
 	log.trace("::notNullValidation(parameters, errorMessage) - Start: Bridged");
@@ -244,7 +244,7 @@ public class ParameterValidator {
     //<editor-fold defaultstate="collapsed" desc="full parameters">
     
     /**
-     * Validates that the given {@linkn Object} and checks if the instance is not {@code null}.
+     * Validates that the given {@link Object} and checks if the instance is not {@code null}.
      * If the object itself is {@code null} will throw an {@link IllegalArgumentException} embedded on the given 
      * {@link T exception} {@link Class clazz} intended for the second hand caller (the code that is calling the method calling this one).
      * This method uses the {@link #notNullValidation(java.util.Collection, java.lang.String, java.lang.Class)} element for the validation.
@@ -257,7 +257,7 @@ public class ParameterValidator {
      * @param exceptionClazz A custom {@link RuntimeException} configured by the user/caller to wrap the exception under it. The method uses Generics for this purpose;
      *			    in case this is {@code null} a simple {@link IllegalArgumentException} will be used instead.
      * @param <T> The {@link Class} of the parameter to wrap the {@link IllegalArgumentException} under in case it is thrown.
-     * @throws IllegalArgumentException - if the provided parameter is {@code null} and the class {@link T} is not provided.
+     * @throws IllegalArgumentException - if the provided parameter is {@code null} and the class {@code T} is not provided.
      * @throws T if provided and the parameter is {@code null}.
      */
     public static <T extends RuntimeException> void notNullValidation(Object parameter,String errorMessage,Class<T> exceptionClazz) {
@@ -282,7 +282,7 @@ public class ParameterValidator {
     }
     
     /**
-     * Validates that the given array of {@linkn Object} parameters and checks if the instance or the elements inside are not null.
+     * Validates that the given array of {@link Object} parameters and checks if the instance or the elements inside are not null.
      * If the any of the parameters or the object itself is null will throw an {@link IllegalArgumentException} 
      * embedded on the given {@link T exception} {@link Class clazz} intended for the second hand caller (the code that is calling the method calling this one).
      * This method uses the {@link #notNullValidation(java.util.Collection, java.lang.String, java.lang.Class)} element for the validation.
@@ -295,7 +295,7 @@ public class ParameterValidator {
      * @param exceptionClazz A custom {@link RuntimeException} configured by the user/caller to wrap the exception under it. The method uses Generics for this purpose;
      *			    in case this is null a simple {@link IllegalArgumentException} will be used instead.
      * @param <T> The {@link Class} of the parameter to wrap the {@link IllegalArgumentException} under in case it is thrown.
-     * @throws IllegalArgumentException - if the provided parameter is null and the class {@link T} is not provided.
+     * @throws IllegalArgumentException - if the provided parameter is null and the class {@code T} is not provided.
      * @throws T if provided and the parameter is null.
      */
     public static <T extends RuntimeException> void notNullValidation(Object[] parameters,String errorMessage,Class<T> exceptionClazz) {
@@ -331,7 +331,7 @@ public class ParameterValidator {
      * @param exceptionClazz A custom {@link RuntimeException} configured by the user/caller to wrap the exception under it. The method uses Generics for this purpose;
      *			    in case this is {@code null} a simple {@link IllegalArgumentException} will be used instead.
      * @param <T> The {@link Class} of the parameter to wrap the {@link IllegalArgumentException} under in case it is thrown.
-     * @throws IllegalArgumentException - if the provided parameter is {@code null} and the class {@link T} is not provided.
+     * @throws IllegalArgumentException - if the provided parameter is {@code null} and the class {@code T} is not provided.
      * @throws T if provided and the parameter is {@code null}.
      */
     public static <T extends RuntimeException> void notNullValidation(Collection<Object> parameters,String errorMessage,Class<T> exceptionClazz) {
