@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.white-sdev</groupId>
     <artifactId>White_Validations</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>
 	This Library will help you to perform basic generic validations for all of your standard 
@@ -71,6 +71,11 @@
 	    <version>5.3.1</version>
 	    <scope>test</scope>
 	</dependency>
+	<dependency>
+	    <artifactId>junit</artifactId>
+	    <groupId>junit</groupId>
+	    <version>4.13</version>
+	</dependency>
     </dependencies>
     
     <distributionManagement>
@@ -86,6 +91,26 @@
     
     <build>
 	<plugins>
+	    
+	    <plugin>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<!-- latest version (2.20.1) does not work well with JUnit5 -->
+		<version>2.19.1 </version>
+		<dependencies>
+		    <dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-surefire-provider</artifactId>
+			<version>1.0.3</version>
+		    </dependency>
+		    <dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.3.1</version>
+		    </dependency>
+		</dependencies>
+	    </plugin>
+	    
+	    
 	    <plugin>
 		<groupId>org.sonatype.plugins</groupId>
 		<artifactId>nexus-staging-maven-plugin</artifactId>

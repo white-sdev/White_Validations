@@ -301,7 +301,7 @@ public class ParameterValidator {
     public static <T extends RuntimeException> void notNullValidation(Object[] parameters,String errorMessage,Class<T> exceptionClazz) {
 	try{
 	    log.trace("::notNullValidation(parameters, errorMessage,exceptionClazz) - Start: Briged");
-	    notNullValidation( parameters==null?parameters:new ArrayList<>(Arrays.asList(parameters)), errorMessage, exceptionClazz);
+	    notNullValidation( parameters==null?null:new ArrayList<Object>(Arrays.asList(parameters)), errorMessage, exceptionClazz);
 	    log.trace("::notNullValidation(parameters, errorMessage,exceptionClazz) - Finish: Briged");
 	} catch (IllegalArgumentException e) {
 	    log.trace("::notNullValidation(parameters, errorMessage,exceptionClazz) - Finish: Null(s) value(s) were Exception will be thrown");
@@ -316,6 +316,10 @@ public class ParameterValidator {
 	    
         }
     }
+    
+//    public static <T extends RuntimeException> void notNullForcedValidation(Collection<Object> parameters,String errorMessage,Class<T> exceptionClazz){
+//	
+//    }
     
     /**
      * Validates that the given {@link Collection} of parameters  and checks if the element or the elements inside are not {@code null}.
@@ -338,7 +342,8 @@ public class ParameterValidator {
 	try{
 	    log.trace("::notNullValidation(Collection<Object>,String ,Class<T>) - Start: ");
 	    if (errorMessage==null) errorMessage="The provided parameter should not be null, make sure it is initialized before the call.";
-	    if ( parameters==null ) throw new IllegalArgumentException(errorMessage);
+	    if ( parameters==null ) throw new IllegalArgumentException("The provided parameters to validate should not be null, "
+		    + "please provide an initialized collection of parametrs to validate if they are null.");
 	    
 	    for(Object parameter:parameters)
 		if ( parameter==null ) 

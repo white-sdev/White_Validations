@@ -123,6 +123,7 @@ public class SimpleValidationUtils {
      */
     public static <T extends RuntimeException> T createException(String errorMessage, Exception innerException,Class<T> exceptionClazz){
 	log.trace("::createException(errorMessage,innerException,exceptionClazz) - Start: ");
+	if(exceptionClazz==null) throw new IllegalArgumentException("The Exception class that will be taken to create the Exception cant be null");
 	try{
 	    java.lang.reflect.Constructor<T> exceptionConstructor = exceptionClazz.getConstructor(String.class,RuntimeException.class);
 

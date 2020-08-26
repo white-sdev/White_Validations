@@ -6,7 +6,7 @@ methods throwing your custom exceptions and/or custom messages of error and usef
 ### What is this repository for? ###
 
 * Quick summary
-Already implemented its is the first method. But you can import all of the validators to your class
+Already implemented its first method. But you can import all of the validators to your class
 The caller can just import all the validations on to its classes with a static import and use them as local. 
 For example:<br>
 <code>

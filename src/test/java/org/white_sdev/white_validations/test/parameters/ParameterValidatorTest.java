@@ -165,12 +165,45 @@ public class ParameterValidatorTest {
 	log.trace("::testNotNullValidationCustomExceptionWrap() - Start: ");
 	String message="Message to the user";
 	try{
-	    notNullValidation((Object[])null,message , CustomException.class);
+	    notNullValidation((Object[])null,message, CustomException.class);
 	    fail("The method didnt throw the custom exception CustomException.");
 	}catch(CustomException e){
-	    log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",e);
-	    assert(e.getMessage().contains(message));
+	    e.printStackTrace();
+	    fail("The method threw the CustomException but not in the correct place.");
+	}catch(IllegalArgumentException e){ //this is a validation of the validation the method should do when the user does not privide the parameters correctly.
+	    try{
+		notNullValidation(new Object[]{null},message, CustomException.class);
+		fail("The method didnt throw the custom exception CustomException.");
+	    }catch(CustomException ex){
+		log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",ex);
+		assert(ex.getMessage().contains(message));
+	    }
+	}catch(Exception e){
+	    e.printStackTrace();
+	    fail("The method threw an Exception but not the correct one.");
 	}
     }
     
+    
+    /**
+     * Test the simple way to call for a validation of multiple parameters in one.  ;
+     * 
+     * 
+     * @author <a href='mailto:obed.vazquez@gmail.com'>Obed Vazquez</a>
+     * @since 2020-08-25
+     */
+    @Test
+    public void testSimpleArrayValidation( ) {
+	log.trace("::testSimpleArrayValidation() - Start: ");
+	String message="Impossible to create the object. The parameter can't be null.";
+	try{
+	    notNullValidation(new Object[]{null,"NOT-NULL"},message);
+	    fail("The method didnt throw any exception when asked for a null value.");
+
+	    log.trace("::testSimpleArrayValidation() - Finish: ");
+	} catch (Exception e) {
+	    log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",e);
+	    assert(e.getMessage().contains(message));
+        }
+    }
 }

@@ -58,7 +58,11 @@ hs_err_pid*
 *.jar
 *.rar
 *.tar
+*.tar.gz
+*.nar
+*.ear
 *.zip
+*.war
 
 # Logs and databases #
 ######################
