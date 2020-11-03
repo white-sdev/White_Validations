@@ -264,7 +264,7 @@ public class ParameterValidator {
 	try{
 	    log.trace("::notNullValidation(parameter,errorMessage,exceptionClazz) - Start: Briged");
 	    
-	    notNullValidation(new ArrayList<>(){{add(parameter);}},errorMessage,exceptionClazz);
+	    notNullValidation(new ArrayList<Object>(){{add(parameter);}},errorMessage,exceptionClazz);
 	    
 	    log.trace("::notNullValidation(parameter,errorMessage,exceptionClazz) - Finish: Briged");
 	} catch (IllegalArgumentException e) {
