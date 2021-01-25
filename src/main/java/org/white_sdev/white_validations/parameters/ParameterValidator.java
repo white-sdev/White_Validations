@@ -139,7 +139,14 @@ public class ParameterValidator {
      */
     public static void notNullValidation(Object...parameters) {
 	log.trace("::notNullValidation(parameters) - Start: Bridging");
-	notNullValidation((String)null,(Class<RuntimeException>)null,parameters);
+	ArrayList<Object> parameterList=null;
+	try{
+	    parameterList=new ArrayList<>();
+	    parameterList.addAll(Arrays.asList(parameters));
+	}catch(Exception ex){
+	    throw new White_ValidationsException("Impossible transform the given parameters into a List due to an unexpected internal error. Please report this exception.", ex);
+	}
+	notNullValidation((String)null,(Class<RuntimeException>)null,parameterList);
 	log.trace("::notNullValidation(parameters) - Finish: Bridged");
     }
     
@@ -181,9 +188,13 @@ public class ParameterValidator {
      */
     public static void notNullValidation(String errorMessage,Object...parameters) {
 	log.trace("::notNullValidation(parameters, errorMessage) - Start: Bridged");
-	
-	ArrayList<Object> parameterList=new ArrayList<>();
-	parameterList.addAll(Arrays.asList(parameters));
+	ArrayList<Object> parameterList=null;
+	try{
+	    parameterList=new ArrayList<>();
+	    parameterList.addAll(Arrays.asList(parameters));
+	}catch(Exception ex){
+	    throw new White_ValidationsException("Impossible transform the given parameters into a List due to an unexpected internal error. Please report this exception.", ex);
+	}
 	notNullValidation(errorMessage, (Class<RuntimeException>) null,parameterList);
 	log.trace("::notNullValidation(parameters, errorMessage) - Finish: Bridged");
         

@@ -16,25 +16,25 @@ For example:<br>
  	}
 ```
 you can also do this:
-<code>
-> > 	    notNullValidation("This parameter must not be null because is vital to complete my process",MyProjectException.class,parameter1,parameter2);
-</code>
+```java
+ 	    notNullValidation("This parameter must not be null because is vital to complete my process",MyProjectException.class,parameter1,parameter2);
+```
 And the library will encapsulate the exception (if thrown) under your specified exception.
 the methods accept, any number of parameters or collections
 * Version
-2.0.0
+2.1.0
 
 ### How do I get set up? ###
 
 * Summary of set up
 look for the library on maven (["white-sdev + White_Validations"](https://mvnrepository.com/artifact/com.github.white-sdev/White_Validations)) and import the library into your project
-by including it in your POM. [2.0 version](https://mvnrepository.com/artifact/com.github.white-sdev/White_Validations/2.0.0)
+by including it in your POM. [2.1.0 version](https://mvnrepository.com/artifact/com.github.white-sdev/White_Validations/2.0.0)
 ```XML
 <!-- https://mvnrepository.com/artifact/com.github.white-sdev/White_Validations -->
 <dependency>
     <groupId>com.github.white-sdev</groupId>
     <artifactId>White_Validations</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 
@@ -43,7 +43,9 @@ by including it in your POM. [2.0 version](https://mvnrepository.com/artifact/co
 Alternatively you can manually import the .jar file into your project.
 * Configuration
 the code:
->  import static org.white_sdev.white_validations.parameters.ParameterValidator.*;
+```java
+  import static org.white_sdev.white_validations.parameters.ParameterValidator.*;
+```
 will import all validations into your workspace (Classes).
 * Dependencies
 this library uses lombok to log errors and general logs.

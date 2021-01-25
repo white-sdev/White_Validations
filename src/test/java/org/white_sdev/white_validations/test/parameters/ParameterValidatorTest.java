@@ -135,6 +135,7 @@ public class ParameterValidatorTest {
 	log.trace("::testNormalNotNullValidation() - Start: ");
 	try{
 	    notNullValidation("Message to the user",1);
+	    notNullValidation(1);
 	    log.info("::testNormalNotNullValidation() - Finish: Test passed");
 	}catch(RuntimeException e){
 	    log.error("::testNormalNotNullValidation() - The method mistakenly returned an error: Exception thrown: \n",e);
