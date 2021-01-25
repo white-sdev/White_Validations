@@ -1,8 +1,9 @@
 /*
- *  Filename:  ParameterValidatorTest.java
- *  Creation Date:  Jun 27, 2020
- *  Purpose:   
- *  Author:    <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
+ *  Filename:  White_ValidationsIllegalArgumentException.java
+ *  Creation Date:  Jan 25, 2021
+ *  Purpose:   Encapsulate IllegalArgumentExceptions inside the Library
+ *  Author:    Obed Vazquez
+ *  E-mail:    obed.vazquez@gmail.com
  * 
  *  *** Creative Commons Attribution 4.0 International Public License ***
  *  Web Version: https://creativecommons.org/licenses/by/4.0/legalcode
@@ -96,141 +97,38 @@
  * 
  * Creative Commons may be contacted at creativecommons.org.
  */
-package org.white_sdev.white_validations.test.parameters;
-
-import org.white_sdev.white_validations.test.parameters.utils.CustomException;
-import java.util.Collection;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.white_sdev.white_validations.parameters.ParameterValidator.*;
+package org.white_sdev.white_validations.exceptions;
 
 
 /**
- * Test for the class {@link ParemeterValidator}
+ * Used to encapsulate all the Illegal Argument Library Exceptions.
  * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
- * @since 2020-06-27
+ * @since Jan 25, 2021
  */
-@Slf4j
-public class ParameterValidatorTest {
-
+public class White_ValidationsIllegalArgumentException extends IllegalArgumentException{
+    
+    //<editor-fold defaultstate="collapsed" desc="Constructors">
     /**
-     * Test of notNullValidation method, of class ParameterValidator.
+     * Default and only constructor used to encapsulate all the Illegal Argument Library Exceptions.
+     *
+     * @param message	Description of the error.
+     * @param ex	Exception to encapsulate.
      * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
-     * @since 2020-06-27
+     * @since 2020-05-22
      */
-    @Test
-    public void testNotNullValidation() {
-	log.trace("::testNotNullValidation() - Start: ");
-	try{
-	    notNullValidation("Message to the user",(Collection)null);
-	    fail("The method didnt throw any exception.");
-	}catch(RuntimeException e){
-	    log.debug("::testNotNullValidation() - Finish: Exception thrown: \n",e);
-	}
+    public White_ValidationsIllegalArgumentException(String message, Exception ex) {
+	super(message, ex);
     }
-    
-    @Test
-    public void testNormalNotNullValidation() {
-	log.trace("::testNormalNotNullValidation() - Start: ");
-	try{
-	    notNullValidation("Message to the user",1);
-	    log.info("::testNormalNotNullValidation() - Finish: Test passed");
-	}catch(RuntimeException e){
-	    log.error("::testNormalNotNullValidation() - The method mistakenly returned an error: Exception thrown: \n",e);
-	    assertTrue(false,"The method mistakenly returned an error: Exception thrown: \n"+e);
-	}
-    }
-    
+
     /**
-     * Test of notNullValidation(3 parameters) method, of class ParameterValidator.
+     * Default constructor used to generate controlled Illegal Argument throughout the Library.
+     *
+     * @param message	Description of the error.
      * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
-     * @since 2020-06-27
+     * @since 2020-05-22
      */
-    @Test
-    public void testNotNullValidationCustomExceptionWrap(){
-	log.trace("::testNotNullValidationCustomExceptionWrap() - Start: ");
-	String message="Message to the user";
-	try{
-	    notNullValidation(message , CustomException.class,(Object)null);
-	    fail("The method didnt throw the custom exception CustomException.");
-	}catch(CustomException e){
-	    log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",e);
-	    assert(e.getMessage().contains(message));
-	}
+    public White_ValidationsIllegalArgumentException(String message) {
+	super(message);
     }
-    
-    @Test
-    public void testBridgedRuntimeThrow(){
-	log.trace("::testNotNullValidationCustomExceptionWrap() - Start: ");
-	String message="Message to the user";
-	try{
-	    notNullValidation(message, CustomException.class,(Object[])null);
-	    fail("The method didnt throw the custom exception CustomException.");
-	}catch(CustomException e){
-	    e.printStackTrace();
-	    fail("The method threw the CustomException but not in the correct place.");
-	}catch(IllegalArgumentException e){ //this is a validation of the validation the method should do when the user does not privide the parameters correctly.
-	    try{
-		notNullValidation(message, CustomException.class,new Object[]{null});
-		fail("The method didnt throw the custom exception CustomException.");
-	    }catch(CustomException ex){
-		log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",ex);
-		assert(ex.getMessage().contains(message));
-	    }
-	}catch(Exception e){
-	    e.printStackTrace();
-	    fail("The method threw an Exception but not the correct one.");
-	}
-    }
-    
-    
-    /**
-     * Test the simple way to call for a validation of multiple parameters in one.  ;
-     * 
-     * 
-     * @author <a href='mailto:obed.vazquez@gmail.com'>Obed Vazquez</a>
-     * @since 2020-08-25
-     */
-    @Test
-    public void testSimpleArrayValidation( ) {
-	log.trace("::testSimpleArrayValidation() - Start: ");
-	String message="TEST ERROR MESSAGE";
-	try{
-	    notNullValidation(message,null,"NOT-NULL");
-	    fail("The method didnt throw any exception when asked for a null value.");
-
-	    log.trace("::testSimpleArrayValidation() - Finish: ");
-	} catch (Exception e) {
-	    log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",e);
-	    if(e.getMessage().contains(message)) return;
-	    Throwable cause=e.getCause();
-	    while(cause!=null){
-		if(cause.getMessage().contains(message)) return;
-		cause=cause.getCause();
-	    }
-	    fail("The exception does not cotains the given message");
-        }
-    }
-    
-    @Test
-    public void testEncapsulatedExceptionMessage( ) {
-	log.trace("::testSimpleArrayValidation() - Start: ");
-	String message="TEST ENCAPSULATED ERROR MESSAGE";
-	try{
-	    notNullValidation(message,CustomException.class,null,"NOT-NULL");
-	    fail("The method didnt throw any exception when asked for a null value.");
-
-	    log.trace("::testSimpleArrayValidation() - Finish: ");
-	} catch (Exception e) {
-	    log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",e);
-	    if(e.getMessage().contains(message)) return;
-	    Throwable cause=e.getCause();
-	    while(cause!=null){
-		if(cause.getMessage().contains(message)) return;
-		cause=cause.getCause();
-	    }
-	    fail("The exception does not cotains the given message");
-        }
-    }
+    //</editor-fold>
 }
