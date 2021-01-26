@@ -123,7 +123,7 @@ public class ParameterValidatorTest {
     public void testNotNullValidation() {
 	log.trace("::testNotNullValidation() - Start: ");
 	try{
-	    notNullValidation("Message to the user",(Collection)null);
+	    notNullValidation(msg("Message to the user"),(Collection)null);
 	    fail("The method didnt throw any exception.");
 	}catch(RuntimeException e){
 	    log.debug("::testNotNullValidation() - Finish: Exception thrown: \n",e);
@@ -134,8 +134,9 @@ public class ParameterValidatorTest {
     public void testNormalNotNullValidation() {
 	log.trace("::testNormalNotNullValidation() - Start: ");
 	try{
-	    notNullValidation("Message to the user",1);
+	    notNullValidation(msg("Message to the user"),1);
 	    notNullValidation(1);
+	    notNullValidation("Not Null Parameter");
 	    log.info("::testNormalNotNullValidation() - Finish: Test passed");
 	}catch(RuntimeException e){
 	    log.error("::testNormalNotNullValidation() - The method mistakenly returned an error: Exception thrown: \n",e);
@@ -153,7 +154,7 @@ public class ParameterValidatorTest {
 	log.trace("::testNotNullValidationCustomExceptionWrap() - Start: ");
 	String message="Message to the user";
 	try{
-	    notNullValidation(message , CustomException.class,(Object)null);
+	    notNullValidation(CustomException.class,msg(message), (Object)null);
 	    fail("The method didnt throw the custom exception CustomException.");
 	}catch(CustomException e){
 	    log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",e);
@@ -166,14 +167,14 @@ public class ParameterValidatorTest {
 	log.trace("::testNotNullValidationCustomExceptionWrap() - Start: ");
 	String message="Message to the user";
 	try{
-	    notNullValidation(message, CustomException.class,(Object[])null);
+	    notNullValidation(CustomException.class,msg(message), (Object[])null);
 	    fail("The method didnt throw the custom exception CustomException.");
 	}catch(CustomException e){
 	    e.printStackTrace();
 	    fail("The method threw the CustomException but not in the correct place.");
 	}catch(IllegalArgumentException e){ //this is a validation of the validation the method should do when the user does not privide the parameters correctly.
 	    try{
-		notNullValidation(message, CustomException.class,new Object[]{null});
+		notNullValidation(CustomException.class, msg(message), new Object[]{null});
 		fail("The method didnt throw the custom exception CustomException.");
 	    }catch(CustomException ex){
 		log.debug("::testNotNullValidationCustomExceptionWrap() - Finish: Exception thrown: \n",ex);
@@ -198,7 +199,7 @@ public class ParameterValidatorTest {
 	log.trace("::testSimpleArrayValidation() - Start: ");
 	String message="TEST ERROR MESSAGE";
 	try{
-	    notNullValidation(message,null,"NOT-NULL");
+	    notNullValidation(msg(message),null,"NOT-NULL");
 	    fail("The method didnt throw any exception when asked for a null value.");
 
 	    log.trace("::testSimpleArrayValidation() - Finish: ");
@@ -219,7 +220,7 @@ public class ParameterValidatorTest {
 	log.trace("::testSimpleArrayValidation() - Start: ");
 	String message="TEST ENCAPSULATED ERROR MESSAGE";
 	try{
-	    notNullValidation(message,CustomException.class,null,"NOT-NULL");
+	    notNullValidation(CustomException.class,msg(message),null,"NOT-NULL");
 	    fail("The method didnt throw any exception when asked for a null value.");
 
 	    log.trace("::testSimpleArrayValidation() - Finish: ");

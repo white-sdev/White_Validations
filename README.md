@@ -22,19 +22,19 @@ you can also do this:
 And the library will encapsulate the exception (if thrown) under your specified exception.
 the methods accept, any number of parameters or collections
 * Version
-2.1.0
+3.0.0
 
 ### How do I get set up? ###
 
 * Summary of set up
 look for the library on maven (["white-sdev + White_Validations"](https://mvnrepository.com/artifact/com.github.white-sdev/White_Validations)) and import the library into your project
-by including it in your POM. [2.1.0 version](https://mvnrepository.com/artifact/com.github.white-sdev/White_Validations/2.0.0)
+by including it in your POM. [3.0.0 version](https://mvnrepository.com/artifact/com.github.white-sdev/White_Validations/3.0.0)
 ```XML
 <!-- https://mvnrepository.com/artifact/com.github.white-sdev/White_Validations -->
 <dependency>
     <groupId>com.github.white-sdev</groupId>
     <artifactId>White_Validations</artifactId>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 

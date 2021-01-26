@@ -121,50 +121,96 @@ import org.white_sdev.white_validations.exceptions.White_ValidationsIllegalArgum
 @Slf4j
 public class ParameterValidator {
     
+    //<editor-fold defaultstate="collapsed" desc="Message Class">
+
+    /**
+    * Nested class that represents and encapsulates the message the method wants to throw back at the callers when one of the given parameters do not pass the validation process.
+    * This is used as a message even in cases that the method wants to encapsulate the Exception within a custom exception for example in the method: 
+    * {@link #notNullValidation(org.white_sdev.white_validations.parameters.ParameterValidator.ValidationErrorMessage, java.lang.Object...) }. 
+    * This encapsulation is necessary for the methods to validate parameters apart from error messages.
+    * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
+    * @since 2021-01-26
+    */
+    public static class ValidationErrorMessage{
+	/**
+	 * Actual validation error messages encapsulated by this class.
+	 * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
+	 * @since 2021-01-26
+	 */
+	public String validationErrorMessage;
+	
+	/**
+	 * Default and only constructor of the class receiving the single message and only attribute this class intends to encapsulate.
+	 * @author <a href="mailto:obed.vazquez@gmail.coim">Obed Vazquez</a>
+	 * @param validationErrorMessage {@link String} with the {@link RuntimeException} (usually a custom one or by default a {@link IllegalArgumentException}) message for the caller method in case the specified validation is not successful.
+	 * @since 2021-01-26
+	 */
+	public ValidationErrorMessage(String validationErrorMessage){
+	    this.validationErrorMessage=validationErrorMessage;
+	}
+	
+	@Override
+	public String toString(){
+	    return validationErrorMessage;
+	}
+    }
+    
+    /**
+     * Obtains a message ready to be returned to the method caller in case a validation error occurs in any of the parameters
+     * @author <a href="mailto:obed.vazquez@gmail.com">Obed Vazquez</a>
+     * @since 2021-01-26
+     * @param validationErrorMessage {@link String} with the {@link RuntimeException} (usually a custom one or by default a {@link IllegalArgumentException}) message for the caller method in case the specified validation is not successful.
+     * @return			     {@link ValidationErrorMessage} instance with the encapsulated message provided.
+     */
+    public static ValidationErrorMessage msg(String validationErrorMessage){
+	try{
+	    return new ValidationErrorMessage(validationErrorMessage);
+	}catch(Exception ex){
+	    throw new White_ValidationsException("Error processing the validation error message.",ex);
+	}
+    }
+    
+    
+    //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="notNullValidation Methods">
     
     //<editor-fold defaultstate="collapsed" desc="no Message,No exception Class">
     
     /**
-     * Validates that the given array of {@link Object} parameters and checks if the instance or the elements inside are not null.
-     * If the any of the parameters or the object itself is null will throw an {@link IllegalArgumentException} using the 
-     * defaulted message: "The provided parameter should not be {@code null}, make sure it is initialized before the call."
-     * intended for the second hand caller (the code that is calling the method calling this one).
-     * This method uses the {@link #notNullValidation(java.lang.String, java.lang.Class, java.util.Collection)} element for the validation.
+     * Validates that the given {@link Object}(s) as parameter(s) or the element itself are not {@code null}.
+     * If any of the parameters of the varargs or the object itself is {@code null} will throw an {@link IllegalArgumentException} using the 
+     * defaulted message: 
+     * "The provided parameter(s) should not be null, make sure the provided parameter(s) is/are initialized before calling this method.".  <br>
+     * This is a Bridge Method to {@link #notNullValidation(java.lang.Class, org.white_sdev.white_validations.parameters.ParameterValidator.ValidationErrorMessage, java.lang.Object...)}
+     * sending the message and the custom exception class as {@code null}.
      * 
      * @author <a href='mailto:obed.vazquez@gmail.com'>Obed Vazquez</a>
      * @since 2020-07-15
-     * @param parameters array of {@link Object objects} to validate whether it is or have any null values or not.
-     * @throws IllegalArgumentException - if the provided parameter is null and the class {@code T} is not provided.
+     * @param parameters    varargs of {@link Object objects} to validate whether it is or have any {@code null} values in it or not.
+     * @throws IllegalArgumentException - if any of the the provided parameters or the parameter itself is {@code null}.
      */
     public static void notNullValidation(Object...parameters) {
 	log.trace("::notNullValidation(parameters) - Start: Bridging");
-	ArrayList<Object> parameterList=null;
-	try{
-	    parameterList=new ArrayList<>();
-	    parameterList.addAll(Arrays.asList(parameters));
-	}catch(Exception ex){
-	    throw new White_ValidationsException("Impossible transform the given parameters into a List due to an unexpected internal error. Please report this exception.", ex);
-	}
-	notNullValidation((String)null,(Class<RuntimeException>)null,parameterList);
+	notNullValidation((Class<RuntimeException>)null,(ValidationErrorMessage)null,parameters);
 	log.trace("::notNullValidation(parameters) - Finish: Bridged");
     }
     
     /**
-     * Validates that the given {@link Collection} of parameters  and checks if the element or the elements inside are not null.
-     * If the any of the parameters or the object itself is null will throw an {@link IllegalArgumentException} using the 
-     * defaulted message: "The provided parameter should not be {@code null}, make sure it is initialized before the call."
-     * intended for the second hand caller (the code that is calling the method calling this one).
-     * This method uses the {@link #notNullValidation(java.lang.String, java.lang.Class, java.util.Collection)} element for the validation.
-     * 
+     * Validates that the given {@link Collection} of parameters and checks if the element or the elements inside are not {@code null}.
+     * If any of the parameters or the object itself is {@code null} will throw an {@link IllegalArgumentException} using the 
+     * defaulted message: 
+     * "The provided parameter(s) should not be null, make sure the provided parameter(s) is/are initialized before calling this method.".  <br>
+     * This is a Bridge Method to {@link #notNullValidation(java.lang.Class, org.white_sdev.white_validations.parameters.ParameterValidator.ValidationErrorMessage, java.util.Collection)}
+     * setting the custom exception class and message as {@code null}.
      * @author <a href='mailto:obed.vazquez@gmail.com'>Obed Vazquez</a>
      * @since 2020-07-15
-     * @param parameters {@link Collection} of {@link Object objects} to validate whether it is or have any {@code null} values or not.
-     * @throws IllegalArgumentException - if the provided parameter is {@code null}.
+     * @param parameters    {@link Collection} of {@link Object objects} to validate whether it is or have any {@code null} values in it or not.
+     * @throws IllegalArgumentException - if any of the the provided parameters or the parameter itself is {@code null}.
      */
     public static void notNullValidation(Collection<Object> parameters) {
 	log.trace("::notNullValidation(Collection<Object>) - Start: Bridging");
-	notNullValidation((String)null,null,parameters);
+	notNullValidation((Class<RuntimeException>)null,(ValidationErrorMessage)null,parameters);
 	log.trace("::notNullValidation(Collection<Object>) - Finish: Bridged");
     }
     
@@ -174,48 +220,48 @@ public class ParameterValidator {
     //<editor-fold defaultstate="collapsed" desc="No exception Class">
     
     /**
-     * Validates that the given array of {@link Object} parameters and checks if the instance or the elements inside are not null.
-     * If the any of the parameters or the object itself is null will throw an {@link IllegalArgumentException} 
-     * intended for the second hand caller (the code that is calling the method calling this one).
-     * This method uses the {@link #notNullValidation(java.lang.String, java.lang.Class, java.util.Collection)} element for the validation.
+     * Validates that the given {@link Object}(s) as parameter(s) or the element itself are not {@code null}.
+     * If any of the parameters of the varargs or the object itself is {@code null} will throw an {@link IllegalArgumentException}.<br>
+     * This is a Bridge Method to {@link #notNullValidation(java.lang.Class, org.white_sdev.white_validations.parameters.ParameterValidator.ValidationErrorMessage, java.lang.Object...)}
+     * sending the custom exception class as {@code null}.
+     * To send a message as one of the parameters of this method you can use {@link #msg(java.lang.String)} for a more convenient way to generate one. For example:<br>
+     * <code>notNullValidation(msg("my error message"),MyProjectException.class,parametersToValidate);</code>
      * 
      * @author <a href='mailto:obed.vazquez@gmail.com'>Obed Vazquez</a>
      * @since 2020-07-15
-     * @param parameters array of {@link Object objects} to validate whether it is or have any null values or not.
-     * @param errorMessage {@link String message} to add to the exception as a description in case the parameter is in fact null. 
-     *			    If this is null the defaulted message will be used: "The provided parameter should not be null, make sure it is initialized before the call."
-     * @throws IllegalArgumentException - if the provided parameter is null and the class {@code T} is not provided.
+     * @param parameters    varargs of {@link Object objects} to validate whether it is or have any {@code null} values in it or not.
+     * @param errorMessage  {@link ValidationErrorMessage messageObject} that encapsulates the actual {@link String} message to add to the exception as a description in case the 
+     *			    parameter is in fact {@code null}; use method {@link #msg(java.lang.String)} to format this parameter.
+     *			    If this is {@code null} the defaulted message will be used: 
+     *			    "The provided parameter(s) should not be null, make sure the provided parameter(s) is/are initialized before calling this method."
+     * @throws IllegalArgumentException - if any of the the provided parameters or the parameter itself is {@code null}.
      */
-    public static void notNullValidation(String errorMessage,Object...parameters) {
+    public static void notNullValidation(ValidationErrorMessage errorMessage,Object...parameters) {
 	log.trace("::notNullValidation(parameters, errorMessage) - Start: Bridged");
-	ArrayList<Object> parameterList=null;
-	try{
-	    parameterList=new ArrayList<>();
-	    parameterList.addAll(Arrays.asList(parameters));
-	}catch(Exception ex){
-	    throw new White_ValidationsException("Impossible transform the given parameters into a List due to an unexpected internal error. Please report this exception.", ex);
-	}
-	notNullValidation(errorMessage, (Class<RuntimeException>) null,parameterList);
+	notNullValidation((Class<RuntimeException>)null,errorMessage,parameters);
 	log.trace("::notNullValidation(parameters, errorMessage) - Finish: Bridged");
         
     }
     
     /**
-     * Validates that the given {@link Collection} of parameters  and checks if the element or the elements inside are not null.
-     * If the any of the parameters or the object itself is null will throw an {@link IllegalArgumentException} 
-     * intended for the second hand caller (the code that is calling the method calling this one).
-     * This method uses the {@link #notNullValidation(java.lang.String, java.lang.Class, java.util.Collection)} element for the validation.
-     * 
+     * Validates that the given {@link Collection} of parameters and checks if the element or the elements inside are not {@code null}.
+     * If any of the parameters or the object itself is {@code null} will throw an {@link IllegalArgumentException}. <br>
+     * To send a message as one of the parameters of this method you can use {@link #msg(java.lang.String)} for a more convenient way to generate one. For example:<br>
+     * <code>notNullValidation(msg("my error message"),MyProjectException.class,parametersToValidate);</code>
+     * This is a Bridge Method to {@link #notNullValidation(java.lang.Class, org.white_sdev.white_validations.parameters.ParameterValidator.ValidationErrorMessage, java.util.Collection)}
+     * setting the custom exception class as {@code null}.
      * @author <a href='mailto:obed.vazquez@gmail.com'>Obed Vazquez</a>
      * @since 2020-07-15
-     * @param parameters {@link Collection} of {@link Object objects} to validate whether it is or have any {@code null} values or not.
-     * @param errorMessage {@link String message} to add to the exception as a description in case the parameter is in fact {@code null}. 
-     *			    If this is {@code null} the defaulted message will be used: "The provided parameter should not be {@code null}, make sure it is initialized before the call."
-     * @throws IllegalArgumentException - if the provided parameter is {@code null}.
+     * @param parameters    {@link Collection} of {@link Object objects} to validate whether it is or have any {@code null} values in it or not.
+     * @param errorMessage  {@link ValidationErrorMessage messageObject} that encapsulates the actual {@link String} message to add to the exception as a description in case the 
+     *			    parameter is in fact {@code null}; use method {@link #msg(java.lang.String)} to format this parameter.
+     *			    If this is {@code null} the defaulted message will be used: 
+     *			    "The provided parameter(s) should not be null, make sure the provided parameter(s) is/are initialized before calling this method."
+     * @throws IllegalArgumentException - if any of the the provided parameters or the parameter itself is {@code null}.
      */
-    public static void notNullValidation(String errorMessage,Collection<Object> parameters) {
+    public static void notNullValidation(ValidationErrorMessage errorMessage,Collection<Object> parameters) {
 	log.trace("::notNullValidation(Collection<Object>,String) - Start: Bridging");
-	notNullValidation(errorMessage,null,parameters);
+	notNullValidation((Class<RuntimeException>)null,errorMessage,parameters);
 	log.trace("::notNullValidation(Collection<Object>,String) - Finish: Bridged");
     }
     
@@ -224,83 +270,76 @@ public class ParameterValidator {
     //<editor-fold defaultstate="collapsed" desc="full parameters">
     
     /**
-     * Validates that the given {@link Object} and checks if the instance is not {@code null}.If the object itself is {@code null} will throw an {@link IllegalArgumentException} embedded on the given 
-    {@link T exception} {@link Class clazz} intended for the second hand caller (the code that is calling the method calling this one).
-     * This method uses the {@link #notNullValidation(java.lang.String, java.lang.Class, java.util.Collection)} element for the validation.
+     * Validates that the given {@link Object}(s) as parameters or the element itself are not {@code null}.
+     * If any of the parameters of the varargs or the object itself is {@code null} will throw an {@link IllegalArgumentException} and will embed it
+     * under the custom {@link T exception} {@link Class clazz} provided. This method is intended for the second hand caller (the code that is calling the method calling this one).<br>
+     * This is a Bridge Method to {@link #notNullValidation(java.lang.Class, org.white_sdev.white_validations.parameters.ParameterValidator.ValidationErrorMessage, java.util.Collection)}
+     * that will only transform the parameters varargs into a {@link Collection} and pass the responsibility to the main method.<br>
+     * To send a message as one of the parameters of this method you can use {@link #msg(java.lang.String)} for a more convenient way to generate one. For example:<br>
+     * <code>notNullValidation(msg("my error message"),MyProjectException.class,parametersToValidate);</code>
      * 
      * @author <a href='mailto:obed.vazquez@gmail.com'>Obed Vazquez</a>
      * @since 2020-07-15
-     * @param parameters    {@code varargs} of {@link Object objects} to validate whether it is or have any {@code null} values or not.
-     * @param errorMessage  {@link String message} to add to the exception as a description in case the parameter is in fact {@code null}. 
-     *			    If this is {@code null} the defaulted message will be used: "The provided parameter should not be {@code null}, make sure it is initialized before the call."
-     * @param exceptionClazz A custom {@link RuntimeException} configured by the user/caller to wrap the exception under it. The method uses Generics for this purpose;
-     *			    in case this is {@code null} a simple {@link IllegalArgumentException} will be used instead.
-     * @param <T> The {@link Class} of the parameter to wrap the {@link IllegalArgumentException} under in case it is thrown.
-     * @throws IllegalArgumentException - if the provided parameter is {@code null} and the class {@code T} is not provided.
-     * @throws T if provided and the parameter is {@code null}.
+     * @param parameters    varargs of {@link Object objects} to validate whether it is or have any {@code null} values in it or not.
+     * @param errorMessage  {@link ValidationErrorMessage messageObject} that encapsulates the actual {@link String} message to add to the exception as a description in case the 
+     *			    parameter is in fact {@code null}; use method {@link #msg(java.lang.String)} to format this parameter.
+     *			    If this is {@code null} the defaulted message will be used: 
+     *			    "The provided parameter(s) should not be null, make sure the provided parameter(s) is/are initialized before calling this method."
+     * @param exceptionClazz A custom {@code T} class extending {@link RuntimeException} configured by the user/caller to wrap the exception under it. The method uses Generics for this purpose;
+     *			    in case this is {@code null} a simple {@link IllegalArgumentException} will be used instead (preferred way without the use of Generics).
+     * @param <T> The {@link RuntimeException} {@link Class} of the parameter to wrap the {@link IllegalArgumentException} under in case it is thrown.
+     * @throws IllegalArgumentException - if any of the the provided parameters or the parameter itself is {@code null} and the class {@code T} is not provided.
+     * @throws T if provided and any of the provided parameters or the parameter itself is {@code null}.
      */
-    public static <T extends RuntimeException> void notNullValidation(String errorMessage,Class<T> exceptionClazz,Object...parameters) {
-	log.trace("::notNullValidation(errorMessage,exceptionClazz,...parameters) - Start:");
+    public static <T extends RuntimeException> void notNullValidation(Class<T> exceptionClazz,ValidationErrorMessage errorMessage,Object...parameters) {
+	log.trace("::notNullValidation(exceptionClazz,errorMessage,...parameters) - Start:");
 	ArrayList<Object> parametersList=null;
-	
-	if(exceptionClazz==null){
-	    log.warn("::notNullValidation(errorMessage,exceptionClazz,...parameters): Java did not recognize correctly the first parameter. "
-		+ "White_Validations is assuming the first parameter is null and a Custom Exception Class was not provided for this validation, "
-		+ "redirecting to the correct method");
-	    ArrayList<Object> parameterList=null;
-	    try{
-		parameterList=new ArrayList<Object>(){{add(exceptionClazz);}};
-		parameterList.addAll(Arrays.asList(parameters));
-		if(parameterList==null)
-		    throw new White_ValidationsException("Unable to combine parameters with null Exception Class");
-	    }catch(Exception e){
-		throw new White_ValidationsException("Impossible transform the given parameters into a List due to an unexpected internal error. Please report this exception.", e);
-	    }
-	    notNullValidation(errorMessage, (Class<RuntimeException>) null,parameterList);
-	}
-	
 	try{
-	    
-	    log.trace("::notNullValidation(errorMessage,exceptionClazz,...parameters): Bridging");
+	    log.trace("::notNullValidation(exceptionClazz,errorMessage,...parameters): Transforming parameters into list parameters");
 	    parametersList=parameters!=null?new ArrayList<>(Arrays.asList(parameters)):null;
-	    
-	    log.trace("::notNullValidation(parameter,errorMessage,exceptionClazz) - Finish: Bridging");
 	} catch (Exception e) {
 	    throw new White_ValidationsException("Impossible transform the given parameters into a List due to an unexpected internal error. Please report this exception.", e);
         }
-	notNullValidation(errorMessage,exceptionClazz,parametersList);
+	
+	log.trace("::notNullValidation(exceptionClazz,errorMessage,...parameters): Bridging");
+	notNullValidation(exceptionClazz,errorMessage,parametersList);
+	log.trace("::notNullValidation(exceptionClazz,errorMessage,...parameters) - Finish: Bridged");
     }
     
     /**
-     * Validates that the given {@link Collection} of parameters  and checks if the element or the elements inside are not {@code null}.
-     * If the any of the parameters or the object itself is {@code null} will throw an {@link IllegalArgumentException} 
-     * embedded on the given {@link T exception} {@link Class clazz}. Core method of the series intended for the second hand caller 
-     * (the code that is calling the method calling this one).
+     * Validates that the given {@link Collection} of parameters and checks if the element or the elements inside are not {@code null}.
+     * If any of the parameters or the object itself is {@code null} will throw an {@link IllegalArgumentException} and will embed it
+     * under the custom {@link T exception} {@link Class clazz} provided. This is the Core method of the series ({@code notNullValidation}s) intended for the second hand caller 
+     * (the code that is calling the method calling this one).<br>
+     * To send a message as one of the parameters of this method you can use {@link #msg(java.lang.String)} for a more convenient way to generate one. For example:<br>
+     * <code>notNullValidation(msg("my error message"),MyProjectException.class,parametersToValidate);</code>
      * 
      * @author <a href='mailto:obed.vazquez@gmail.com'>Obed Vazquez</a>
      * @since 2020-07-15
-     * @param parameters {@link Collection} of {@link Object objects} to validate whether it is or have any {@code null} values or not.
-     * @param errorMessage {@link String message} to add to the exception as a description in case the parameter is in fact {@code null}. 
-     *			    If this is {@code null} the defaulted message will be used: "The provided parameter should not be {@code null}, make sure it is initialized before the call."
-     * @param exceptionClazz A custom {@link RuntimeException} configured by the user/caller to wrap the exception under it. The method uses Generics for this purpose;
-     *			    in case this is {@code null} a simple {@link IllegalArgumentException} will be used instead.
-     * @param <T> The {@link Class} of the parameter to wrap the {@link IllegalArgumentException} under in case it is thrown.
-     * @throws IllegalArgumentException - if the provided parameter is {@code null} and the class {@code T} is not provided.
-     * @throws T if provided and the parameter is {@code null}.
+     * @param parameters    {@link Collection} of {@link Object objects} to validate whether it is or have any {@code null} values in it or not.
+     * @param errorMessage  {@link ValidationErrorMessage messageObject} that encapsulates the actual {@link String} message to add to the exception as a description in case the 
+     *			    parameter is in fact {@code null}; use method {@link #msg(java.lang.String)} to format this parameter.
+     *			    If this is {@code null} the defaulted message will be used: 
+     *			    "The provided parameter(s) should not be null, make sure the provided parameter(s) is/are initialized before calling this method."
+     * @param exceptionClazz A custom {@code T} class extending {@link RuntimeException} configured by the user/caller to wrap the exception under it. The method uses Generics for this purpose;
+     *			    in case this is {@code null} a simple {@link IllegalArgumentException} will be used instead (preferred way without the use of Generics).
+     * @param <T> The {@link RuntimeException} {@link Class} of the parameter to wrap the {@link IllegalArgumentException} under in case it is thrown.
+     * @throws IllegalArgumentException - if any of the the provided parameters or the parameter itself is {@code null} and the class {@code T} is not provided.
+     * @throws T if provided and any of the provided parameters or the parameter itself is {@code null}.
      */
-    public static <T extends RuntimeException> void notNullValidation(String errorMessage,Class<T> exceptionClazz,Collection<Object> parameters) {
+    public static <T extends RuntimeException> void notNullValidation(Class<T> exceptionClazz,ValidationErrorMessage errorMessage,Collection<Object> parameters) {
 	if ( parameters==null || parameters.size()<1 ) throw new White_ValidationsIllegalArgumentException("The provided parameters to validate should not be null, "
 		+ "please provide at least 1 parameter to validate if they are null.");
 	try{
 	    log.trace("::notNullValidation(Collection<Object>,String ,Class<T>) - Start: ");
-	    if (errorMessage==null) errorMessage="The provided parameter(s) should not be null, make sure the provided parameter(s) is/are initialized before calling this method.";
+	    if (errorMessage==null) errorMessage=msg("The provided parameter(s) should not be null, make sure the provided parameter(s) is/are initialized before calling this method.");
 	    //The scenario where the ExceptionClass is null is managed inside the for loop
 	    
 	    for(Object parameter:parameters)
 		if ( parameter==null ) 
 		    throw exceptionClazz==null?
-			    new IllegalArgumentException(errorMessage):
-			    SimpleValidationUtils.createException(errorMessage, new IllegalArgumentException(errorMessage), exceptionClazz); 
+			    new IllegalArgumentException(errorMessage.toString()):
+			    SimpleValidationUtils.createException(errorMessage.toString(), new IllegalArgumentException(errorMessage.toString()), exceptionClazz); 
 		
 	    
 	    
@@ -319,5 +358,5 @@ public class ParameterValidator {
     //</editor-fold>
     
     //</editor-fold>
-   
+    
 }
