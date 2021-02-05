@@ -11,13 +11,13 @@ The caller can just import all the validations on to his/her own classes with a 
 For example:<br>
 ```java
  	void myMethod(String myParam){
-  	    notNullValidation("This parameter must not be null because is vital to complete my process",myParam);
+  	    notNullValidation(myParam);
   	    //My process definition
  	}
 ```
 you can also do this:
 ```java
- 	    notNullValidation("This parameter must not be null because is vital to complete my process",MyProjectException.class,parameter1,parameter2);
+ 	    notNullValidation(msg("This parameter must not be null because is vital to complete my process"),MyProjectException.class,parameter1,parameter2);
 ```
 And the library will encapsulate the exception (if thrown) under your specified exception.
 the methods accept, any number of parameters or collections
